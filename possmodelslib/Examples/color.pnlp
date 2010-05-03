@@ -1,0 +1,21 @@
+% 
+% Possibilistic normal logic program
+% 
+% 2-coloration graph problem
+%
+% each color has a degree of importance (preference)
+%
+
+100 v(1..5).
+% the vertex 1 is linked to all other vertices, and that's all.
+100 e(1,X) :- v(X), X!=1.
+
+100 colored(X) :- v(X), red(X).
+100 colored(X) :- v(X), green(X).
+
+
+100 red(X) :- v(X), not green(X), not blue(X). 
+50  green(X) :- v(X), not red(X), not blue(X).
+
+100 :- e(X,Y), red(X), red(Y).
+100 :- e(X,Y), green(X), green(Y).

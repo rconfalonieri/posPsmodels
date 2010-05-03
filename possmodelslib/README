@@ -1,0 +1,55 @@
+
+ARCHIVE :
+
+Once you have decompressed the archive, you will be provided 
+with a directory named PosSmodels1.1 and containing
+
+. COPYING : a file containing the  GNU general public license
+
+. Examples : a directory containing some examples of possibilistic normal logic programs
+
+. README : this file
+
+. SRC : a directory containing all source files for preprocLparse and posSmodels
+
+. computePosStableModels : a shell script to run the whole system by
+               computePosStableModels f k
+  if you want to compute k possibilistic stable models of the program in file f
+
+
+
+INSTALLATION (tested only on Linux System)
+
+. You need to have all the .o and .h files  of Smodels 2.28 in a
+  directory smodels-2.28 placed at the same level of PosSmodels directory.
+  (Smodels is available at http://www.tcs.hut.fi/Software/smodels/)
+
+. The directory structure has to be like :
+
+|---smodels-2.28
+|
+|---PosSmodels1.1
+|    |
+|    |--COPYING
+|    |--Examples
+|    |   |--...
+|    |   
+|    |--README
+|    |--SRC
+|    |   |--...
+|    |   
+|    |--computePosStableModels
+
+. Go to PosSmodels1.1/SRC directory and run make all
+
+. Then, from PosSmodels1.1 directory, you can use our system by launching
+       preprocLparse f | lparse --true-negation | posSmodels k
+  or
+       computePosStableModels f k
+  if you want to compute k possibilistic stable models of the program in file f
+
+NOTE : You must have an executable version of Lparse
+   (Lparse is available at http://www.tcs.hut.fi/Software/smodels/)
+
+URL :
+ http://www.info.univ-angers.fr/pub/pn/Softwares/PosSmodels/

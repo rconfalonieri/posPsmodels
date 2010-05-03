@@ -1,0 +1,6 @@
+100 mary.
+60 john.
+80 stormymeeting:-mary, john.
+90 bob :- not peter.
+60 peter :- not bob.
+100 stormymeeting:- mary, bob.

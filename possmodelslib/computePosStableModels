@@ -1,0 +1,1 @@
+./preprocLparse $1 | lparse --true-negation | ./posSmodels $2

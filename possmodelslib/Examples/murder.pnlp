@@ -1,0 +1,15 @@
+100 quarrel(angel).
+100 inarea(joan). 
+60 inarea(postman).
+40 athome(angel).
+100 alibi(angel) :- athome(angel). 
+80 motive(angel) :- quarrel(angel). 
+80 motive(joan) :- quarrel(joan). 
+80 motive(postman) :- quarrel(postman). 
+70 suspect(angel) :- motive(angel), not alibi(angel). 
+70 suspect(joan) :- motive(joan), not alibi(joan). 
+70 suspect(postman) :- motive(postman), not alibi(postman). 
+50 suspect(angel) :- inarea(angel), not nosuspect(angel). 
+50 suspect(joan) :- inarea(joan), not nosuspect(joan). 
+50 suspect(postman) :- inarea(postman), not nosuspect(postman). 
+
