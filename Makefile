@@ -4,7 +4,7 @@
 
 
 all: 
-	cd computeLppod ; make preprocLPPODparse; make posPsmodels ; cd computeLppod ;
+	cd computeLppod ; make preprocLPPODparse; make posPsmodels ; cd .. ;
 	@echo '*********************************************'
 	@echo 'posPsmodels v0.1'
 	@echo 'Usage:'
