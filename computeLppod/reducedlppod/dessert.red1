@@ -1,0 +1,3 @@
+60 cake.
+40 coffee.
+%% REDUCED 100 :- ice_cream, coffee.

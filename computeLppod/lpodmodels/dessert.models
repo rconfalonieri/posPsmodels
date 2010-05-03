@@ -1,0 +1,12 @@
+[Generator] Stable Model: 1
+Stable Model: coffee cake *sat(1,2) *sat(2,1) 
+Answer: 1
+Stable Model: coffee cake *sat(1,2) *sat(2,1) 
+[Generator] Stable Model: 2
+Stable Model: cake tea *sat(1,2) *sat(2,2) 
+[Generator] Stable Model: 3
+Stable Model: ice_cream tea *sat(1,1) *sat(2,2) 
+Answer: 2
+Stable Model: ice_cream tea *sat(1,1) *sat(2,2) 
+[Generator] Stable Model: 4
+Stable Model: ice_cream tea *sat(1,1) *sat(2,2) 

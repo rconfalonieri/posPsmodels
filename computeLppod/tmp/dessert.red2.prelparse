@@ -1,0 +1,7 @@
+ cake:-  nu__(60).
+ tea:-  nu__(40).
+%% REDUCED 100 :- ice_cream, coffee.
+
+#external nu__(X).
+nu__(40).
+nu__(60).
