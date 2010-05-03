@@ -1,0 +1,70 @@
+psmodels-2.26a
+--------------
+
+This is a modified version of smodels-2.26 that can be used to compute
+preferred stable models of normal logic programs under the Ordered
+Disjunction semantics. The programs should be grounded using lparse
+version 1.0.10 or later. 
+
+Usage: psmodels N input_file
+
+Note that the command line differs from the common smodels command
+line in that standard input is not used. The parameter N is the
+desired number of models. 
+
+For example, given the OD program dessert.lp:
+
+ice_cream x cake.
+coffee x tea.
+ :- ice_cream, coffee.
+
+we can compute all inclusion-preferred stable models with:
+
+ % lparse --priorities dessert.lp > /tmp/out
+ % psmodels 0 /tmp/out
+
+The resulting answer is:
+ Answer: 1
+ Stable Model: coffee cake *sat(1,2) *sat(2,1) 
+ Answer: 2
+ Stable Model: ice_cream tea *sat(1,1) *sat(2,2) 
+ Tester calls: 3
+ 
+As we see, there are two preferred models. In the first the first
+choice was satisfied to the second degree and the first one to the
+first degree while the second model satisfies the first choice to the
+first degree and the second choice to the second degree. The line
+'Tester calls' tells how many times the tester program is invoked to
+check whether a given stable model is a preferred one. 
+
+Syntax
+------
+
+Basically everything that goes through lparse should work also with
+psmodels but since this is a first prototype, it might be a good idea
+to refrain from using more esoteric stuff. 
+
+The basic syntax is as follows:
+
+     a x b x c :- body.   % a basic ordered disjunction 
+ r : a x b x c.           % an ordered disjunction with a label 
+ r(X) : a(X) x b(X) :- d(X). % a OD with a label and variables.
+
+     priority(r,q).       % preference labeled 'r' is more important
+                          % than preference labeled 'q'.
+
+Note that it is not a good idea to form unconditional cycles using
+'priority/2', since the current translation doesn't handle them
+gracefully. This will certainly be fixed when we find a translation
+that works better. 
+
+The three implemented preference criteria (defined in Brewka, et.al:
+Implementing Ordered Disjunction Using Answer Set Solvers for Normal
+Programs, JELIA'02) can be accessed using lparse command line options
+'--inclusion-optimal', '--pareto-optimal', and
+'--cardinality-optimal'.
+
+There are few examples in the examples directory. 
+
+Tommi Syrjänen 
+tommi.syrjanen@hut.fi
