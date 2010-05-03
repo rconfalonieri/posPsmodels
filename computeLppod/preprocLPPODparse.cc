@@ -1659,7 +1659,8 @@ if (lppod!=NULL) {
 	//cout << "\nProgram name is: " <<filename2;
 	f = fopen (lppod,"r");
 	if (!f){
-	  fprintf(stderr, "impossible to open %s \n", lppod);
+	  cout << "impossible to open " << lppod << endl;
+	  //fprintf(stderr, "impossible to open %s \n", lppod);
 	  //exit(1);
 	  return NULL;
 	  
