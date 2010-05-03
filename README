@@ -1,0 +1,95 @@
+posPsmodels-v0.1
+--------------
+
+
+PosPsmodels is an ASP-based solver (in beta version) able to process logic programs with possibilsitic ordered disjunction (or LPPODs). 
+LPPODs are a generalisation of LPODs and they are class of programs which can reason about preferences and uncertainty. 
+PosPsmodels can be used to compute possibilistic preferred answer sets under LPPODs semantics. 
+The semantics is implemented by means of a syntactic reduction and a fix-point operator used to compute possibilistic normal logic programs.
+
+Pospsmodels needs lparse, psmodels, and possModels (and therefore smodels v2.28).
+
+Usage: computeLppod/./posPsmodels lppod/input_file
+
+Note that the command line differs from the common smodels command
+line in that standard input is not used. The parameter N is the
+desired number of models. 
+
+For example, given the LPPOD program dessert.lppod:
+
+60 ice_cream x cake.
+40 coffee x tea.
+100 :- ice_cream, coffee.
+
+we can compute all possibilistic preferred stable models with:
+
+ % (let's assume we are in the computeLppod folder)
+ % ./posPsmodels lppod/dessert.lppod
+
+The resulting answer is:
+
+ ******** Possibilistic Model 1***********
+Possibilistic Atoms: 
+(coffee, 40) (cake, 60) 
+Satisfaction degrees: 
+*sat(1,2) *sat(2,1) 
+***************************************************
+
+******** Possibilistic Model 2***********
+Possibilistic Atoms: 
+(tea, 40) (cake, 60) 
+Satisfaction degrees: 
+*sat(1,2) *sat(2,2) 
+***************************************************
+
+******** Possibilistic Model 3***********
+Possibilistic Atoms: 
+(tea, 40) (ice_cream, 60) 
+Satisfaction degrees: 
+*sat(1,1) *sat(2,2) 
+***************************************************
+
+As we see, there are three possibilistic preferred models. 
+Possibilistic Model 1 and Possibilistic Model 3 are equally preferred.
+Possibilistic Model 2 is second choice.
+
+Syntax
+------
+
+Basically everything that goes through lparse should work also with
+posPsmodels but since this is a first prototype, it might be a good idea
+to refrain from using more esoteric stuff. In particular the use of predicates 
+is still not supported, and it is one of the main improvement planned to be made.
+
+The basic syntax is as follows:
+
+ (0..100]   a x b :- body.   % a basic possibilistic ordered disjunction rule
+ 
+ where (0..100] means an integer belonging to (0,100], and ‘a x b :- body’ is an ordered disjunction rule. 
+ Informally it means that if body is true, then a should be certain at least at level alpha. If a can’t be true, then b has to be certain at least alpha.
+
+The formal definition can be found in:
+
+Confalonieri, R., Nieves, J.C., Osorio, M., Vázquez-Salceda, J. 
+Possibilistic Semantics for Logic Programs with Ordered Disjunction. 
+In: Foundations of Information and Knowledge Systems (Prade, H., Link, S., eds.), LNCS vol. 5956, pp. 133-152, Springer, (2010).
+
+The posPsmodels distribution archive contains a README file that explains how to get ready with the solver. 
+The solver is in beta release and it has been tested for OS X and systems only.
+
+TODO list:
+ * 1) parsing from lparse (for supporting predicates)
+ * 2) transformation rules (the success specially)
+ * 3) possibilistic preference relation
+ * 3a) choose criteria of preference relation (for psmodel)
+ * 4) runtime loading and unloading of shared dynamic libraries
+ * 5) Java Wrapper
+ * 6) optimize and re-organize the code (modularity, free unused memory etc)
+
+
+
+Roberto Confalonieri
+confalonieri@lsi.upc.edu
+
+
+
