@@ -1,0 +1,15 @@
+posPsmodels INSTALLATION GUIDE
+=========================
+
+Run:
+
+ make all
+ 
+This will compile posPsmodels and all its dependencies. 
+The posPsmodels binary will be located in the computeLppod folder.
+Please check the README file for usage instructions.
+
+
+
+Roberto Confalonieri
+confalonieri@lsi.upc.edu
