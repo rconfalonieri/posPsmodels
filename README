@@ -11,10 +11,6 @@ Pospsmodels needs lparse, psmodels, and possModels (and therefore smodels v2.28)
 
 Usage: computeLppod/./posPsmodels lppod/input_file
 
-Note that the command line differs from the common smodels command
-line in that standard input is not used. The parameter N is the
-desired number of models. 
-
 For example, given the LPPOD program dessert.lppod:
 
 60 ice_cream x cake.
@@ -75,7 +71,7 @@ Possibilistic Semantics for Logic Programs with Ordered Disjunction.
 In: Foundations of Information and Knowledge Systems (Prade, H., Link, S., eds.), LNCS vol. 5956, pp. 133-152, Springer, (2010).
 
 The posPsmodels distribution archive contains a README file that explains how to get ready with the solver. 
-The solver is in beta release and it has been tested for OS X and systems only.
+The solver is in beta release and it has been tested for OS X systems only.
 
 TODO list:
  * 1) parsing from lparse (for supporting predicates)
