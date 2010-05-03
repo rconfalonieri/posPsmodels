@@ -97,6 +97,7 @@ main(int argc, char* argv[]) {
 	list <LpodModel> *modelList = new list<LpodModel>();
 
 
+
 	for (int i = 1; i < argc; i++) {
 		if (isdigit(*argv[i])) {
 			models = strtol(argv[i], 0, 10);
@@ -106,12 +107,13 @@ main(int argc, char* argv[]) {
 	}
 	//fname = "lppod/diagnosis.lppod";
 	if (!fname) {
-		cerr << "usage: computeLPPODs [models] input_file" << endl;
+		cerr << "usage: posPsmodels input_file" << endl;
 		return (EXIT_FAILURE);
 	}
 
 	//generate P*
 	program_name = possibilistic_projection(fname);
+
 	//program_name = "diagnosis";
 	//char * program_name2 = "diagnosis";
 	if (program_name == NULL) {
@@ -129,6 +131,7 @@ main(int argc, char* argv[]) {
 	int reduced_programs_nr = 1;
 
 	if (p->isOrderedDisjunctionProgram()) {
+
 
 		//When it was a library...
 		cout << "Program contains x" << endl;

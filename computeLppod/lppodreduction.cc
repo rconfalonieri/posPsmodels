@@ -27,6 +27,7 @@ checkNegativeBody(list<string> *negBody, list<string> *atoms) {
 				cout << "Looking for :" << *atom_model << endl;
 				cout << "-------------------------" << endl;
 			}
+			//TODO: patch for handling predicates
 
 			atom_neg_body = find(negBody->begin(), negBody->end(), *atom_model);
 			if (atom_neg_body != negBody->end()) {
@@ -184,6 +185,7 @@ reduceOrderedDisjunctionHead(list<string> *head, list<string> *atoms, LppodRule 
 				cout << "Looking for :" << *atom_head << endl;
 				cout << "-------------------------" << endl;
 			}
+			//TODO: patch for handling predicates
 
 			atom_model = find(atoms->begin(), atoms->end(), *atom_head);
 			if (atom_model != atoms->end()) {
