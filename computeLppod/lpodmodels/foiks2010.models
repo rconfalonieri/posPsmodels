@@ -1,4 +1,0 @@
-Answer: 1
-Stable Model: b d c *sat(1,1) *sat(2,1) *sat(3,2) 
-Answer: 2
-Stable Model: a d c *sat(1,1) *sat(3,1) *sat(2,2) 

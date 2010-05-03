@@ -1,6 +1,0 @@
- ita x mex :- not info(ita), not info(mex).
- ita x mex :- info(ita).
- mex x ita :- info(mex).
- :- ita, mex.
- info(ita).
- info(mex).

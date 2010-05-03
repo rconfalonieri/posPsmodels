@@ -1,7 +1,0 @@
- dr1 :- di1, not dr2.
- dr2 :- di2, not dr1.
- c1 :- dr1, di1.
- c2 :- dr2, di2.
- di1.
- di2.
-

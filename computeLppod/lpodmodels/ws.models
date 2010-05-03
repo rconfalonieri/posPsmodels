@@ -1,3 +1,0 @@
-Answer: 1
-Stable Model: -down input(italian) output(high_map) cand *sat(1,1) *sat(2,1) *sat(3,1) *sat(4,1) *sat(5,1) *sat(6,1) 
-Tester calls: 8

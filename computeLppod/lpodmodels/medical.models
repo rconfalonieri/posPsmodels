@@ -1,5 +1,0 @@
-Answer: 1
-Stable Model: dr2 di2 di1 c2 *sat(1,2) *sat(2,1) 
-Answer: 2
-Stable Model: dr1 di2 di1 c1 *sat(1,1) *sat(2,2) 
-Tester calls: 2

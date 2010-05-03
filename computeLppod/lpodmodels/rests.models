@@ -1,5 +1,0 @@
-Answer: 1
-Stable Model: mex info(mex) info(ita) *sat(1,2) *sat(2,1) 
-Answer: 2
-Stable Model: ita info(mex) info(ita) *sat(1,1) *sat(2,2) 
-Tester calls: 2
