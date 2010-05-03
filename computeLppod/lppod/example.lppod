@@ -1,0 +1,2 @@
+60 a x b :- not c.
+50 b x c :- not d.

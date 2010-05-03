@@ -1,0 +1,7 @@
+%% REDUCED 70 a x b :- not c, not d.
+20 c :- e.
+50 b :- c.
+50 b :- d.
+%% REDUCED 100 :- a, b.
+60 c.
+40 d.

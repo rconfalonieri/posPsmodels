@@ -1,0 +1,2 @@
+ a x b :- not c.
+ b x c :- not d.

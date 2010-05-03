@@ -1,0 +1,5 @@
+Answer: 1
+Stable Model: headache fever measles migraine nausea red_spots -flu *sat(2,1) *sat(1,2) *sat(3,2) 
+Answer: 2
+Stable Model: headache fever flu -measles -migraine *sat(1,1) *sat(3,1) *sat(2,2) 
+Tester calls: 5

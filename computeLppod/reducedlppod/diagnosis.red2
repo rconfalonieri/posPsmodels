@@ -1,0 +1,24 @@
+%% Hyp
+%% valid diagnosis are the M_i intersection Hyp
+
+
+%% KB
+%% usually built from the decision process / decision tree
+
+80 fever :- measles.
+%% REDUCED 30 30 red_spots :- measles.
+70 headache :- migraine.
+%% REDUCED 20 20 nausea :- migraine.
+90 fever :- flu.
+80 headache :- flu.
+
+%% LPOD part
+
+40 -measles.
+70 flu.
+50 -migraine.
+
+%% constraints
+
+%% REDUCED 100 :- not headache.
+%% REDUCED 100 :- not fever.

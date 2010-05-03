@@ -1,0 +1,8 @@
+Possibilistic consequenses, Duration : 0.0
+
+********** Possibilistic stable model n° 1 **********
+
+(migraine, 50) (-flu, 70) (measles, 40) (headache, 50) (fever, 40) (nausea, 20) (red_spots, 30) 
+Number of atoms (smodels): 9
+Number of rules (smodels): 8
+Total duration : 0.0

@@ -1,0 +1,6 @@
+%% REDUCED 100 ita x mex :- not info(ita), not info(mex).
+100 mex :- info(ita).
+100 mex :- info(mex).
+%% REDUCED 100 :- ita, mex.
+60 info(ita).
+70 info(mex).

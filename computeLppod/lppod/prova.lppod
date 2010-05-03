@@ -1,0 +1,24 @@
+%% Hyp
+%% valid diagnosis are the M_i intersection Hyp
+
+
+%% KB
+%% usually built from the decision process / decision tree
+
+0.8 fever :- measles.
+0.3 red_spots :- measles.
+0.7 headache :- migraine.
+0.2 nausea :- migraine.
+0.9 fever :- flu.
+0.8 headache :- flu.
+
+%% LPOD part
+
+0.4 -measles x measles.
+0.7 -flu x flu.
+0.5 -migraine x migraine.
+
+%% constraints
+
+1 :- not headache.
+1 :- not fever.

@@ -1,0 +1,19 @@
+%% incompability of drugs
+ dr1 :- di1,  nu__(100).
+ dr1 :- di2,  nu__(100).
+%100 dr1 :- di1, not dr2.
+%% REDUCED 100 :- dr1, dr2.
+%100 dr2 :- di2, not dr1.
+%% efficiency of drugs
+ c1 :- dr1, di1,  nu__(70).
+%% REDUCED 30 30 c2 :- dr2, di2.
+%% diagnosis of diseases
+ di1:-  nu__(90).
+ di2:-  nu__(70).
+
+
+#external nu__(X).
+nu__(100).
+nu__(30).
+nu__(70).
+nu__(90).

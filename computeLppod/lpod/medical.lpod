@@ -1,0 +1,13 @@
+%% incompability of drugs
+ dr1 x dr2 :- di1.
+ dr2 x dr1 :- di2.
+%100 dr1 :- di1, not dr2.
+ :- dr1, dr2.
+%100 dr2 :- di2, not dr1.
+%% efficiency of drugs
+ c1 :- dr1, di1.
+ c2 :- dr2, di2.
+%% diagnosis of diseases
+ di1.
+ di2.
+

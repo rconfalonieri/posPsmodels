@@ -1,0 +1,13 @@
+Possibilistic consequenses, Duration : 0.0
+
+********** Possibilistic stable model n° 1 **********
+
+(di2, 70) (di1, 90) (c2, 30) (dr2, 70) 
+Possibilistic consequenses, Duration : 0.0
+
+********** Possibilistic stable model n° 2 **********
+
+(di2, 70) (di1, 90) (dr1, 90) (c1, 70) 
+Number of atoms (smodels): 7
+Number of rules (smodels): 6
+Total duration : 0.1

@@ -1,0 +1,11 @@
+%% REDUCED 100 ita x mex :- not info(ita), not info(mex).
+ mex :- info(ita),  nu__(100).
+ mex :- info(mex),  nu__(100).
+%% REDUCED 100 :- ita, mex.
+ info(ita):-  nu__(60).
+ info(mex):-  nu__(70).
+
+#external nu__(X).
+nu__(100).
+nu__(60).
+nu__(70).
