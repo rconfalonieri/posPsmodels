@@ -1,0 +1,64 @@
+LPARSE INSTALLATION GUIDE
+=========================
+
+The Short Installation Guide
+----------------------------
+
+Run:
+
+ 1. configure
+ 2. make
+ 3. make install
+
+This will compile lparse and install it to /usr/local/bin. You can
+specify some other installation directory by using the --prefix=dir
+argument of configure. You may also copy the lparse binary from the
+src directory directly to where ever you desire. 
+
+The Longer Installation Guide
+-----------------------------
+
+Lparse should compile in a unix environment with standard tools
+straight from the box. However, there are two possible sources of
+problems:
+
+  1. Different versions of bison compiler generator tool name the
+     definition files in different ways. 
+
+  2. The dynamic loading library -ldl may be missing or have a
+     different name. 
+
+The configure script checks for these, but here are hints what to do
+if configure fails for some reason. 
+
+Bison
+-----
+
+Lparse's lexer definition file lex.ll supposes that the symbol
+definition file is named parse.h. 
+
+The Makefile works with the assumption that bison uses the file name
+parse.cc.h and it then renames it to parse.h. This is because older
+(pre 1.29b) versions of GNU bison uses that name. With newer bison
+versions the command-line option --defines=parse.cc.h is used to force
+that name. 
+
+Dynamic Libraries
+-----------------
+
+Lparse allows the user to link his or her own C functions into lparse.
+In unix systems this uses the -ldl library to do it. This feature is
+encapsulated within #ifdef HAVE_DLFCN_H and #ifdef HAVE_LIBDL
+definitions. These directives should be defined in src/config.h if the
+header and the library is present but configure doesn't work for some
+reason, and left out if they are missing. 
+
+Windows Issues
+==============
+
+It is probably a good idea to compile lparse with GNU programming
+tools also when using Windows. 
+
+If you are feeling adventurous, you can try to rename windows_config.h
+into config.h and check what happens when you put it through some
+other compiler. 

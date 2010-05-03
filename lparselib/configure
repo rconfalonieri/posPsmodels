@@ -1,0 +1,136 @@
+#!/usr/bin/perl
+#
+# To compile lparse we need to check two things:
+#   - Whether the system has -dl library, and
+#   - The version of bison installed
+#
+#
+$instdir = "/usr/local/bin";
+
+# The first step is to create a temporary file name using the method
+# from PerlFAQ.
+use IO::File;
+use POSIX qw(tmpnam);
+do {
+  $name = tmpnam();
+} until (! (-e $name));
+
+
+
+# Check arguments.
+while ($arg = shift) {
+  if ($arg =~ /^--prefix=(.*)$/) {
+    $instdir = $1;
+  } elsif ($arg =~ /--debug/) {
+    $debug_makefile = 1;
+  } else {
+    die "usage: configure [--prefix=installation_path]\n";
+  }
+}
+
+# Define autoflush for stdout
+$| = 1;
+
+# First, bison version:
+print "Checking bison version ...";
+`bison --version > $name`;
+open IN, "$name" or die "Could not create a temporary file. Exiting ...\n";
+while (<IN>) {
+  if (/[Bb]ison[^0-9]*(([0-9.]+)([a-z]+)?)*\s*$/) {
+    $whole_version = $1;
+    $bison_version = $2;
+    $bison_letter = $3;
+    print "$whole_version\n";
+    $bison_found = 1;
+  }
+}
+close IN;
+
+# Remove tmpfile
+unlink ($name);
+
+if (!$bison_found) {
+  print "not found\n";
+  die "You need bison to compile lparse. Exiting ...\n";
+}
+
+if ($bison_version < 1.29) {
+  $new_bison = 0;
+} elsif (($bison_version eq "1.29") && ($bison_letter eq "a")) {
+  $new_bison = 0;
+} else {
+  $new_bison = 1;
+}
+
+print "Checking whether -ldl works ...";
+open OUT, ">$name.cc" or die "Cannot open a temporary file for writing";
+print OUT "#include<dlfcn.h>\n";
+print OUT "int main() { dlopen(\"foo\", RTLD_LAZY); }\n";
+close OUT;
+`g++ -o $name.out $name.cc -ldl 2> $name`;
+if ($?) {
+  print "not found\n";
+#  die "g++ -o $name.out $name.cc -ldl &> $name\n";
+  $no_dl = 1;
+} else {
+  print "found\n";
+}
+unlink($name);
+unlink("$name.out");
+unlink("$name.cc");
+if (!$no_dl) {
+#  print "found\n";
+}
+
+# Creating the makefiles
+print "Creating Makefile ...";
+open OUT, ">Makefile" or die "Cannot open Makefile for writing\n";
+print OUT "INSTALLATION_PATH=$instdir\n";
+close OUT;
+`cat Makefile.base >> Makefile`;
+print "done\n";
+
+print "Creating src/Makefile ...";
+open OUT, ">src/Makefile" or die "Cannot open src/Makefile for writing\n";
+if ($new_bison) {
+  print OUT "YACC = bison --defines=parse.cc.h\n";
+} else {
+  print OUT "YACC = bison -d\n";
+}
+if ($no_dl) {
+  print OUT "DLFLAG = \n";
+} else {
+  print OUT "DLFLAG = -ldl\n";
+}
+if ($debug_makefile) {
+  print OUT "CFLAGS=-g -Wall\n";
+  print OUT "LDFLAGS=-g -Wall\n";
+} else {
+  print OUT "CFLAGS=-g -O3\n";
+  print OUT "LDFLAGS=-g -O3\n";
+}
+
+close OUT;
+`cat src/Makefile.base >> src/Makefile`;
+print "done\n";
+
+print "Creating src/config.h...";
+`cp src/config.base src/config.h`;
+open OUT, ">>src/config.h" or die "Cannot open src/config.h for writing\n";
+print OUT "/* Define to 1 if you have the <dlfcn.h> header file. *\/\n";
+if ($no_dl) {
+  print OUT "// ";
+}
+print OUT "#define HAVE_DLFCN_H 1\n";
+if ($no_dl) {
+  print OUT "// ";
+}
+print OUT "/* Define to 1 if you have the `dl' library (-ldl). *\/\n";
+if ($no_dl) {
+  print OUT "#define HAVE_LIBDL 0\n";
+} else {
+  print OUT "#define HAVE_LIBDL 1\n";
+}
+close OUT;
+print "done\n";
+print "You can compile lparse now by typing 'make'.\n";

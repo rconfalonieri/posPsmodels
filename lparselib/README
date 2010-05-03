@@ -1,0 +1,28 @@
+LPARSE 1.1.0 -- a front-end for smodels
+
+Lparse is a front end for smodels system, that takes a
+domain-restricted logic program as its input and produces a ground
+logic program as its output. This program is distributed under GNU
+Public Licence, see file COPYING for details.
+
+Distribution contents:
+   COPYING	- GNU Public Licence
+   INSTALL	- Installation instructions
+   README	- This file
+   NEWS     - What has happened
+   doc/		- Documentation directory
+   examples/	- A couple of example programs
+   tests/	- Set of test cases that can be used to check 
+   lib/		- A template for user-defined functions
+   src/		- Source code directory
+
+This is now the official 1.1.0 version. For now on the version numbers
+will be defined using the following schema:
+
+  - The first digit changes when there's a major rewrite of the
+    code base. 
+
+  - The second digit changes when some major new features are added. 
+
+  - Bugfixes are denoted by the third digit of the version number. 
+
