@@ -1,0 +1,3 @@
+60 ice_cream x cake.
+40 coffee x tea.
+100 :- ice_cream, coffee.

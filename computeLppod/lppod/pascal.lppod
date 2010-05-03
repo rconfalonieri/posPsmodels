@@ -1,0 +1,7 @@
+100 dr1 :- di1, not dr2.
+100 dr2 :- di2, not dr1.
+70 c1 :- dr1, di1.
+30 c2 :- dr2, di2.
+90 di1.
+70 di2.
+
