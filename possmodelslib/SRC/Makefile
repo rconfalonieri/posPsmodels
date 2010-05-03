@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O3 -W -Wall -I ../../smodels-2.28/
+CXXFLAGS = -O3 -w -I ../../smodels-2.28/
 LFLAGS =
 SRCS = MyAtom.cpp AtomSet.cpp PosAtom.cpp PosAtomSet.cpp MyRule.cpp  PosRule.cpp PosRuleVector.cpp Dictionnary.cpp  PosLogProg.cpp ApiExt.cpp LogProgReader.cpp lpio.cpp 
 SRCS_MAIN = $(SRCS) Main.cpp 

@@ -2,8 +2,8 @@
 ## author: rconfalonieri
 ## 15/12/2009
 
-#CXXFLAGS =	-O2 -g -Wall
-CXXFLAGS =	-O2 -g 
+
+CXXFLAGS =	-O2 -g -w
 CXX = g++
 OBJS = posPsmodels.o
 TARGET = posPsmodels

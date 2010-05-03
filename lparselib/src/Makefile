@@ -11,7 +11,7 @@ OBJMAINFILES=array.o instance.o literal.o priority.o term.o debug.o \
 		 extern.o library.o parsetree.o smodels.o graph.o list.o  \
 		 predicate.o symbol.o
 
-CC = g++
+CC = g++ -w
 LEX = flex
 
 lparse :clean $(OBJMAINFILES)

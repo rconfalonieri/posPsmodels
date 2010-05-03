@@ -7,7 +7,7 @@ INSTALLATION_PATH=/usr/local/bin
 all: clean possmodelslib
 
 possmodelslib :
-	#cd ../smodels-2.28/ ; make all; cd ..;
+	cd ../smodels-2.28/ ; make all; cd ..;
 	cd SRC ; make libpossmodelslib; make preprocLparselib; cd ..;
 
 possmodels: 
