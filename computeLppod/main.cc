@@ -38,7 +38,7 @@ using namespace std;
 
 #include "../psmodelslib/psmodels.h"
 #include "../lparselib/src/lparse.h"
-#include "../lparse2lib/src/lparse2.h"
+//#include "../lparse2lib/src/lparse2.h"
 #include "../possmodelslib/SRC/possmodels.h"
 #include "../possmodelslib/SRC/preproclparse.h"
 #include "preprocLPPODparse.h"
