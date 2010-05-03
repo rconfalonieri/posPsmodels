@@ -7,15 +7,15 @@ OBJFILES=array.o instance.o literal.o priority.o term.o debug.o \
 		 extern.o library.o parsetree.o smodels.o graph.o list.o  \
 		 predicate.o symbol.o
 OBJMAINFILES=array.o instance.o literal.o priority.o term.o debug.o \
-         iterate.o lparse.o rule.o error.o lex.o parse.o sm_smodels.o \
+         iterate.o main.o rule.o error.o lex.o parse.o sm_smodels.o \
 		 extern.o library.o parsetree.o smodels.o graph.o list.o  \
 		 predicate.o symbol.o
 
 CC = g++
 LEX = flex
 
-lparse : $(OBJFILES)
-	$(CC)  $(LDFLAGS) -o lparse $(OBJFILES) $(DLFLAG)
+lparse :clean $(OBJMAINFILES)
+	$(CC)  $(LDFLAGS) -o lparse $(OBJMAINFILES) $(DLFLAG)
 	
 liblparselib: $(OBJFILES)
 	@echo 'Building target: $@'
@@ -91,7 +91,14 @@ list.o: list.cc config.h list.h error.h term.h global.h defines.h \
 literal.o: literal.cc config.h debug.h literal.h defines.h term.h \
   global.h extern.h list.h instance.h iterate.h parsetree.h rule.h \
   array.h priority.h symbol.h predicate.h graph.h smodels.h error.h
+ 
+##added
 lparse.o: lparse.cc config.h global.h defines.h extern.h symbol.h debug.h \
+  library.h parsetree.h term.h literal.h list.h instance.h iterate.h \
+  rule.h array.h priority.h graph.h predicate.h smodels.h error.h
+
+## original
+main.o: main.cc config.h global.h defines.h extern.h symbol.h debug.h \
   library.h parsetree.h term.h literal.h list.h instance.h iterate.h \
   rule.h array.h priority.h graph.h predicate.h smodels.h error.h
 parse.o: parse.cc config.h parsetree.h debug.h global.h defines.h \
