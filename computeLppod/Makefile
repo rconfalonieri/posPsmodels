@@ -49,14 +49,14 @@ copy:
 	cp ../possmodelslib/dist/$(PREPROCPARSELIB) .
 
 make-lparse:
-	#cd ../lparselib; make lparse;
-	#cd ../computeLPPOD; 
+	cd ../lparselib; make lparse;
+	cd ../computeLPPOD; 
 	
 make-libs:
-	#cd ../lparselib; make all;
-	#cd ../psmodelslib; make all; 
-	#cd ../possmodelslib; make all; 
-	#cd ../computeLPPOD;
+	cd ../lparselib; make all;
+	cd ../psmodelslib; make all; 
+	cd ../possmodelslib; make all; 
+	cd ../computeLPPOD;
 
 clean:
 	rm preprocLPPODparse.o preprocLPPODparse.cc preprocLPPODparse.lex.c
