@@ -22,7 +22,7 @@ LppodProgram::~LppodProgram() {
 void
 LppodProgram::printRuleList() {
 
-	cout << "----------------------------------" << endl;
+	cout << "----------------------------------------------------------------------------------------------------------------------------------------" << endl;
 	cout << "Printing ruleList of program" << endl;
 	cout << "----------------------------------" << endl;
 	list<LppodRule>::iterator pos;
@@ -30,9 +30,13 @@ LppodProgram::printRuleList() {
 		cout << "Rule type " << pos->getRuleType() << endl;
 		cout << "Original rule" << pos->getRule() << endl;
 		cout << "Possibilistic value " << pos->getPossibilisticValue() << endl;
+		cout << "IsDeleted " << pos->getIsDeleted() << endl;
 		pos->printHeadAtoms();
 		pos->printPosBody();
 		pos->printNegBody();
 	}
+
+	cout << "----------------------------------------------------------------------------------------------------------------------------------------" << endl;
+
 
 }

@@ -40,56 +40,79 @@ private:
 	RuleType ruleType;
 	//for debug
 	string rule,reducedRule,ruleHead,ruleBody;
+	string transformedRule;
+	int ruleId;
 
 public:
 
 
 	LppodRule();
 	~LppodRule();
+
+    string getTransformedRule() const
+    {
+        return transformedRule;
+    }
+
+    void setTransformedRule(string transformedRule)
+    {
+        this->transformedRule = transformedRule;
+    }
+
+    int getRuleId() const
+    {
+        return ruleId;
+    }
+
+    void setRuleId(int ruleId)
+    {
+        this->ruleId = ruleId;
+    }
+
     bool getIsDeleted() const
-    {
-        return isDeleted;
-    }
+	{
+		return isDeleted;
+	}
 
-    void setIsDeleted(bool isDeleted)
-    {
-        this->isDeleted = isDeleted;
-    }
+	void setIsDeleted(bool isDeleted)
+	{
+		this->isDeleted = isDeleted;
+	}
 
-    list<string> *getHead() const
-			{
+	list<string> *getHead() const
+					{
 		return head;
-			}
+					}
 
 	list<string> *getNegBody() const
-			{
+					{
 		return negBody;
-			}
+					}
 
 	list<string> *getPosBody() const
-			{
+					{
 		return posBody;
-			}
+					}
 
 	string getPossibilisticValue() const
-			{
+	{
 		return possibilisticValue;
-			}
+	}
 
 	string getRule() const
-			{
+	{
 		return rule;
-			}
+	}
 
 	string getReducedRule() const
-			{
+	{
 		return reducedRule;
-			}
+	}
 
 	RuleType getRuleType() const
-			{
+	{
 		return ruleType;
-			}
+	}
 
 	void setHead(list<string> *head)
 	{

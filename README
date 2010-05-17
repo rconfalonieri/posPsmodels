@@ -73,17 +73,6 @@ In: Foundations of Information and Knowledge Systems (Prade, H., Link, S., eds.)
 The posPsmodels distribution archive contains a README file that explains how to get ready with the solver. 
 The solver is in beta release and it has been tested for OS X systems only.
 
-TODO list:
- * 1) parsing from lparse (for supporting predicates)
- * 2) transformation rules (the success specially)
- * 3) possibilistic preference relation
- * 3a) choose criteria of preference relation (for psmodel)
- * 4) runtime loading and unloading of shared dynamic libraries
- * 5) Java Wrapper
- * 6) optimize and re-organize the code (modularity, free unused memory etc)
-
-
-
 Roberto Confalonieri
 confalonieri@lsi.upc.edu
 

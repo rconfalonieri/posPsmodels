@@ -10,8 +10,10 @@ all:
 	@echo 'Usage:'
 	@echo './posPsmodels lppod/program_name.lppod'
 	@echo ''
-	@echo 'To test the solver try one of the available LPPODs programs, e.g. ./posPsmodels lppod/dessert.lppod '
+	@echo 'To test the solver try one of the available LPPODs programs, 
+	@echo e.g. ./posPsmodels lppod/dessert.lppod '
 	@echo ''
-	@echo 'To use the solver, put an LPPOD in the lppod folder and run the solver, e.g. ./posPsmodels lppod/your_program.lppod '
+	@echo 'To use the solver, put an LPPOD in the lppod folder and run the solver, 
+	@echo e.g. ./posPsmodels lppod/your_program.lppod '
 	@echo '*********************************************'
 	

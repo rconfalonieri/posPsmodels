@@ -202,10 +202,16 @@ reduceOrderedDisjunctionHead(list<string> *head, list<string> *atoms, LppodRule 
 			disjunctionRule.setHead(newHead);
 		}
 		else {
-			cout << "***************************************************" << endl;
-			cout << "**FATAL ERROR: disjunction rule reduction failed **" << endl;
-			cout << "***************************************************" << endl;
-			exit(1);
+			//TODO handle the case when no atoms are found
+			//possValue = "%% REDUCED "+disjunctionRule.getPossibilisticValue();
+			//redRule = possValue+" "+disjunctionRule.getRule();
+			disjunctionRule.setReducedRule("%% REDUCED "+disjunctionRule.getPossibilisticValue()+" "+disjunctionRule.getRule());
+			disjunctionRule.setIsDeleted(true);
+			//disjunctionRule.setIsDeleted(true);
+			//cout << "***************************************************" << endl;
+			//cout << "**FATAL ERROR: disjunction rule reduction failed **" << endl;
+			//cout << "***************************************************" << endl;
+			//exit(1);
 		}
 		return found;
 
@@ -376,81 +382,88 @@ list<LppodProgram> *reduceLppod(list<LpodModel> *modelList,LppodProgram *p) {
 		reduced_lppod_rules = new list<LppodRule>();
 		for (rule_it=p->getRuleList()->begin(); rule_it!=p->getRuleList()->end();rule_it++) {
 
-			rule_type = rule_it->getRuleType();
-			switch(rule_type) {
+			//check whether the rule was deleted in a transformation
+			if (!rule_it->getIsDeleted()) {
+				rule_type = rule_it->getRuleType();
+				switch(rule_type) {
 
-			case UNDEFINED:
-			case EMPTY:
-			case COMMENT:
-			case FACT:
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule type to reduce " << rule_type << endl;
-					cout << "Rule to reduce " << rule_it->getRule() << endl;
-					cout << "--------------------------" << endl;
+				case UNDEFINED:
+				case EMPTY:
+				case COMMENT:
+				case FACT:
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule type to reduce " << rule_type << endl;
+						cout << "Rule to reduce " << rule_it->getRule() << endl;
+						cout << "--------------------------" << endl;
+					}
+					//possValue = rule_it->getPossibilisticValue();
+					//redRule = possValue+" "+rule_it->getRule();
+					rule_it->setReducedRule(rule_it->getRule());
+					reduced_lppod_rules->push_back(*rule_it);
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
+						cout << "--------------------------" << endl;
+					}
+					break;
+
+				case NORMAL:
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule type to reduce " << rule_type << endl;
+						cout << "Rule to reduce " << rule_it->getRule() << endl;
+						cout << "--------------------------" << endl;
+					}
+
+					reduced_lppod_rules->push_back(*(reduceNormalLppodRule(&*rule_it,&*model_it)));
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
+						cout << "--------------------------" << endl;
+					}
+					break;
+
+				case CONSTRAINT:
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule type to reduce " << rule_type << endl;
+						cout << "Rule to reduce " << rule_it->getRule() << endl;
+						cout << "--------------------------" << endl;
+					}
+
+					reduced_lppod_rules->push_back(*reduceConstraintLppodRule(&*rule_it,&*model_it));
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
+						cout << "--------------------------" << endl;
+					}
+					break;
+
+				case DISJUNCTION:
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule type to reduce " << rule_type << endl;
+						cout << "Rule to reduce " << rule_it->getRule() << endl;
+						cout << "--------------------------" << endl;
+					}
+
+					reduced_lppod_rules->push_back(*reduceOrderedDisjunctionLppodRule(&*rule_it,&*model_it));
+					if (REDUCTION_DEBUG) {
+						cout << "--------------------------" << endl;
+						cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
+						cout << "--------------------------" << endl;
+					}
+					break;
+
+				default:
+					cout << "*******Unexpected rule to reduce*******" << endl;
+					exit(1);
 				}
-				//possValue = rule_it->getPossibilisticValue();
-				//redRule = possValue+" "+rule_it->getRule();
-				rule_it->setReducedRule(rule_it->getRule());
+			}
+			else {
+				(*rule_it).setReducedRule("%% DELETED by transformation "+(*rule_it).getRule());
 				reduced_lppod_rules->push_back(*rule_it);
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
-					cout << "--------------------------" << endl;
-				}
-				break;
-
-			case NORMAL:
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule type to reduce " << rule_type << endl;
-					cout << "Rule to reduce " << rule_it->getRule() << endl;
-					cout << "--------------------------" << endl;
-				}
-
-				reduced_lppod_rules->push_back(*(reduceNormalLppodRule(&*rule_it,&*model_it)));
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
-					cout << "--------------------------" << endl;
-				}
-				break;
-
-			case CONSTRAINT:
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule type to reduce " << rule_type << endl;
-					cout << "Rule to reduce " << rule_it->getRule() << endl;
-					cout << "--------------------------" << endl;
-				}
-
-				reduced_lppod_rules->push_back(*reduceConstraintLppodRule(&*rule_it,&*model_it));
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
-					cout << "--------------------------" << endl;
-				}
-				break;
-
-			case DISJUNCTION:
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule type to reduce " << rule_type << endl;
-					cout << "Rule to reduce " << rule_it->getRule() << endl;
-					cout << "--------------------------" << endl;
-				}
-
-				reduced_lppod_rules->push_back(*reduceOrderedDisjunctionLppodRule(&*rule_it,&*model_it));
-				if (REDUCTION_DEBUG) {
-					cout << "--------------------------" << endl;
-					cout << "Rule added, reduced_lppod_rules size :" << reduced_lppod_rules->size() << endl;
-					cout << "--------------------------" << endl;
-				}
-				break;
-
-			default:
-				cout << "*******Unexpected rule to reduce*******" << endl;
-				exit(1);
 			}
 			reduced_lppod->setRuleList(reduced_lppod_rules);
 			//reduced_lppod->printRuleList();

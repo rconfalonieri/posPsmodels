@@ -18,7 +18,7 @@ using namespace std;
 
 class LpodModel {
 
-private:
+protected:
 	int model_id;
 	list<string> *atoms;
 	list<string> *satisfaction;
@@ -27,6 +27,7 @@ private:
 public:
 
 
+	LpodModel();
 	LpodModel(int id);
 	~LpodModel ();
 
@@ -76,7 +77,7 @@ public:
         cout << "printing atoms in model: " << this->model_id << endl;
         list<string>::iterator pos;
         for(pos = this->atoms->begin();pos != this->atoms->end();pos++){
-            cout << "Atom: " << *pos << endl;
+            cout << "Model Atom: " << *pos << endl;
         }
         cout << "----------------------------------" << endl;
     }

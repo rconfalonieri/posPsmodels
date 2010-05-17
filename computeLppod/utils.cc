@@ -127,4 +127,14 @@ int Utils::string2Int(string strConvert) {
 	return(intReturn);
 }
 
+string Utils::int2String(int intConvert) {
+
+	string s;
+	stringstream out;
+	out << intConvert;
+	s = out.str();
+	return s;
+
+}
+
 

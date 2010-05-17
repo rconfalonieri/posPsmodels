@@ -6,6 +6,7 @@
  */
 
 #include "parsing.h"
+#include "lppodmodel.h"
 
 
 bool existModel(list<LpodModel>* l, LpodModel *model, bool bestModel) {
@@ -104,35 +105,74 @@ LpodModel *getLpodModelById(list<LpodModel> *modelList, int modelId) {
 
 
 void
-printPossibilisticModels(list<LpodModel> *modelList,list<string> *possibilisticModels) {
+printPossibilisticModels(list<LppodModel> *possModelList) {
 
-	list<string>::iterator possModels_it;
-	if (possibilisticModels->size()>0) {
-		int i=1;
+	list<LppodModel>::iterator possModelsIt;
+	list<PossibilisticAtom>::iterator possAtomsIt;
+	map<int,int>::iterator ruleDegreeIt;
+	map<int,int>::iterator rulePossValueIt;
+	map<int,string>::iterator ruleTextIt;
+	list<string>::iterator atomIt;
+	list<string>::iterator satIt;
+	PossibilisticDegree *possDegree;
+	if (possModelList->size()>0) {
+		//int i=1;
 
-		for (possModels_it=possibilisticModels->begin(); possModels_it!=possibilisticModels->end(); possModels_it++) {
+		for (possModelsIt=possModelList->begin(); possModelsIt!=possModelList->end(); possModelsIt++) {
 			cout << endl;
 			cout << endl;
-			cout << "******** Possibilistic Model " << i << "***********" << endl;
-			cout << "Possibilistic Atoms: " << endl;
-			cout << *possModels_it << endl;
-			LpodModel *m = getLpodModelById(modelList,i);
-			cout << "Satisfaction degrees: " << endl;
-			list<string>::iterator pos;
-			if (m != 0) {
-				for (pos=m->getSatisfaction()->begin(); pos!=m->getSatisfaction()->end(); pos++) {
-					cout << *pos << " ";
-				}
-				cout << endl;
-				//model_it = find()
+			cout << "******** Possibilistic Model " << possModelsIt->getModel_id() << "***********" << endl;
+			//cout << "Possibilistic Atoms: " << endl;
+			for (possAtomsIt=possModelsIt->getPossAtomList()->begin(); possAtomsIt!=possModelsIt->getPossAtomList()->end(); possAtomsIt++) {
+				cout << "(" << possAtomsIt->getAtom() << "," << possAtomsIt->getPossibilisticValue() << ") ";
+			}
+			cout <<  endl;
+			possDegree = possModelsIt->getPossDegree();
+			cout << "[Rule_id,sat_degree]: ";
+			for (ruleDegreeIt=possDegree->getRuleDegree()->begin(); ruleDegreeIt!=possDegree->getRuleDegree()->end(); ruleDegreeIt++) {
+				cout << "[" << ruleDegreeIt->first << "," << ruleDegreeIt->second << "] " ;
+				//cout
+				//cout << "(" << possDegIt->getPossRuleValue() << "," << possDegIt->getRuleId() << "," << possDegIt->getDegree() << ")" << endl;
+			}
+			cout <<  endl;
+			cout << "[Rule_id,Necessity_degree]: ";
+			for (rulePossValueIt=possDegree->getRulePossValue()->begin(); rulePossValueIt!=possDegree->getRulePossValue()->end(); rulePossValueIt++) {
+				cout << "[" << (*rulePossValueIt).first << "," << (*rulePossValueIt).second << "] " ;
+				//cout
+				//cout << "(" << possDegIt->getPossRuleValue() << "," << possDegIt->getRuleId() << "," << possDegIt->getDegree() << ")" << endl;
+			}
+			//cout << "[Rule_id,Rule]: ";
+			cout <<  endl;
+			for (ruleTextIt=possDegree->getRuleText()->begin(); ruleTextIt!=possDegree->getRuleText()->end(); ruleTextIt++) {
+				cout << "[Rule_id,Rule]: " << (*ruleTextIt).first << ", " << (*ruleTextIt).second << endl;
+				//cout
+				//cout << "(" << possDegIt->getPossRuleValue() << "," << possDegIt->getRuleId() << "," << possDegIt->getDegree() << ")" << endl;
+			}
+			//cout <<  endl;
+			//LpodModel *m = getLpodModelById(modelList,i);
+			cout << "Was Best LpodModel " << possModelsIt->getBestModel() << endl;
+			//cout << "Atoms: " << endl;
+			//cout << "Atoms size: " << possModelsIt->getAtoms()->size() << endl;
+			//for (atomIt=possModelsIt->getAtoms()->begin(); atomIt!=possModelsIt->getAtoms()->end(); atomIt++) {
+			//	cout << "(" << *atomIt << ") ";
+			//}
+			//cout <<  endl;
+
+			if (possModelsIt->getSatisfaction()->size()>0) {
+				//cout << "Satisfaction degrees: " << endl;
+				//for (satIt=possModelsIt->getSatisfaction()->begin(); satIt!=possModelsIt->getSatisfaction()->end(); satIt++) {
+				//	cout << *satIt << " ";
+				//}
+				//cout <<  endl;
+
 			}
 			else {
 				cout << "The program was a possibilistic normal program, no satisfaction degrees indeed " << endl;
 			}
 			cout << "***************************************************" << endl;
-			cout << endl;
-			cout << endl;
-			i++;
+			//cout << endl;
+			//cout << endl;
+			//i++;
 		}
 	}
 }
@@ -177,13 +217,14 @@ return(new_type==*type);
 }
 
 
-int parseLppodRule(vector<string> splittedLine, string line, LppodProgram *p) {
+int parseLppodRule(vector<string> splittedLine, string line, LppodProgram *p, int ruleId) {
 
 	//vector<string>::iterator it;
 	int size = splittedLine.size();
 	LppodRule *r = new LppodRule;
 	r->setPossibilisticValue(splittedLine[0]);
 	r->setRule(line);
+	r->setRuleId(ruleId);
 	bool new_symbol = false;
 	bool head_done = false;
 	bool is_fact = false;
@@ -270,8 +311,10 @@ int parseLppodRule(vector<string> splittedLine, string line, LppodProgram *p) {
 				}
 			}
 		}
-		if (r->getRuleType()==UNDEFINED)
+		if (r->getRuleType()==UNDEFINED) {
 			r->setRule(line);
+			r->setRuleId(ruleId);
+		}
 	}
 	if (PARSING_DEBUG) {
 		cout << "Rule list size: " << p->getRuleList()->size() << endl;
@@ -416,6 +459,44 @@ int parsePsmodelsNew(char *model_file,list<LpodModel> *modelList) {
 
 }
 
+void updateLppodProgramHead(LppodProgram *p) {
+
+	list<string> *programHead = new list<string>();
+	list<LppodRule>::iterator rules;
+
+	list<LppodRule> *ruleL = p->getRuleList();
+	for (rules=ruleL->begin(); rules!=ruleL->end(); rules++) {
+		if (!rules->getIsDeleted()) {
+			list<string>::iterator head;
+			for (head=rules->getHead()->begin();head!=rules->getHead()->end();head++) {
+				programHead->push_back(*head);
+			}
+		}
+	}
+	p->setProgramHead(programHead);
+}
+
+void updateLppodProgramFacts(LppodProgram *p) {
+
+	list<Fact> *programFacts = new list<Fact>();
+	list<LppodRule>::iterator rules;
+
+	list<LppodRule> *ruleL = p->getRuleList();
+	for (rules=ruleL->begin(); rules!=ruleL->end(); rules++) {
+		if (!rules->getIsDeleted()) {
+			if (rules->getRuleType()==FACT) {
+				list<string>::iterator head;
+				for (head=rules->getHead()->begin();head!=rules->getHead()->end();head++) {
+					Fact *f = new Fact();
+					f->setAtom(*head);
+					f->setPossibilisticValue(rules->getPossibilisticValue());
+					programFacts->push_back(*f);
+				}
+			}
+		}
+	}
+	p->setProgramFacts(programFacts);
+}
 
 
 
@@ -427,13 +508,17 @@ parseLppod(char* lppod, LppodProgram *p) {
 	LppodRule *r;
 	string filename = Utils::char2string(lppod);
 	ifstream f;
+	int ruleId = 1;
 
+
+	//cout << "dwidnwi" << filename << endl;
 	f.open(filename.c_str());
 
 	if (f==NULL) {
 		cout << "Error in opening the lppod program file" << endl;
 		return(EXIT_FAILURE);
 	}
+	//cout << "dwidnwi" << filename << endl;
 
 	while (getline(f, line)) {
 		if (PARSING_DEBUG) {
@@ -446,6 +531,7 @@ parseLppod(char* lppod, LppodProgram *p) {
 
 			r->setRuleType(EMPTY);
 			r->setRule(line);
+			r->setRuleId(EMPTY);
 			p->getRuleList()->push_back(*r);
 
 		} else {
@@ -462,6 +548,7 @@ parseLppod(char* lppod, LppodProgram *p) {
 
 				r->setRuleType(COMMENT);
 				r->setRule(line);
+				r->setRuleId(COMMENT);
 				p->getRuleList()->push_back(*r);
 				//delete r;
 				//p->ruleNumber++;
@@ -469,13 +556,20 @@ parseLppod(char* lppod, LppodProgram *p) {
 
 			default:
 				//cout << "Line to parse"<< endl;
-				parseLppodRule(splittedLine,line,p);
+				parseLppodRule(splittedLine,line,p,ruleId);
+				ruleId++;
 			}
 		}
+
 	}
 	//if (DEBUG)
 	//	p->printRuleList();
 	f.close();
+
+	updateLppodProgramHead(p);
+
+	updateLppodProgramFacts(p);
+
 	//output.close();
 	return(1);
 
@@ -554,14 +648,14 @@ unParseNormalReductedRule(LppodRule *rule_it) {
 }
 
 
-
-
-
 void
-generatePossibilisticModel(list<string> *possibilisticModels, string possmodel) {
+generatePossibilisticModels(list<LppodModel> *possModelList, string possmodel,LpodModel *lpodModel) {
 
 	string line;
 	ifstream f;
+	LppodModel *possModel;
+	list<PossibilisticAtom> *possAtomList;
+	bool found =false;
 
 	f.open(possmodel.c_str());
 	if (f==NULL) {
@@ -576,10 +670,53 @@ generatePossibilisticModel(list<string> *possibilisticModels, string possmodel) 
 		}
 
 		if (!line.empty()) {
-			if ( (line.find("(",0) != string::npos) && (line.find("(smodels)",0) == string::npos))
-				possibilisticModels->push_back(line);
+			if ( (line.find("(",0) != string::npos) && (line.find("(smodels)",0) == string::npos)) {
+				vector<string> tokens;
+				tokenize(line,tokens);
+				PossibilisticAtom *pA;
+				possAtomList = new list<PossibilisticAtom>();
+				//cout << "possmodels line" << line << endl;
+				for (int i=0;i<tokens.size();i++) {
+					//cout << "possmodels line" << endl;
+					//cout << "tokens " << tokens[i] << endl;
+					if (Utils::contains(tokens[i],"(")) {
+						//its a an atom
+
+						pA = new PossibilisticAtom();
+						string tmp = tokens[i].erase(0,1);
+						//cout << "tmp " << tmp << endl;
+						string tmp2 = tmp.erase(tmp.size()-1,tmp.size());
+						//cout << "tmp2 " << tmp2 << endl;
+						pA->setAtom(tmp2);
+						found = true;
+
+					}
+					if (Utils::contains(tokens[i],")") && !found) {
+						// its its possibilistic value
+						//model->getAtoms()->push_back(tokens[i]);
+						string tmp = tokens[i].erase(tokens[i].size()-1,tokens[i].size());
+						//	cout << "tmp " << tmp << endl;
+						pA->setPossibilisticValue(tmp);
+						possAtomList->push_back(*pA);
+						//found2 = true;
+
+					}
+					found = false;
+				}
+			}
 		}
+
+		//found2 = false;
 	}
+	possModel = new LppodModel();
+	possModel->setModel_id(lpodModel->getModel_id());
+	possModel->setBestModel(lpodModel->getBestModel());
+	//possModel->setAtoms(new list<string>());
+	possModel->setAtoms(lpodModel->getAtoms());
+	//possModel->setSatisfaction(new list<string>());
+	possModel->setSatisfaction(lpodModel->getSatisfaction());
+	possModel->setPossAtomList(possAtomList);
+	possModelList->push_back(*possModel);
 	f.close();
 }
 
@@ -656,6 +793,176 @@ generateReducedLppods(list<LppodProgram> *lppods,string program_name) {
 		exit(EXIT_FAILURE);
 	}
 	return lppods->size();
+
+}
+
+string
+unParseLppodRule(LppodRule *rule_it) {
+	string rule;
+	string body;
+	string head;
+	list<string>::iterator head_it;
+	list<string>::iterator body_it;
+	list<string> *headL = rule_it->getHead();
+	list<string> *posL = rule_it->getPosBody();
+	list<string> *negL = rule_it->getNegBody();
+
+	if (GENERATE_DEBUG) {
+		cout << "**********************************" << endl;
+		cout << "*****unParseNormalReductedRule****" << endl;
+		cout << "**********************************" << endl;
+		rule_it->printHeadAtoms();
+		rule_it->printNegBody();
+		rule_it->printPosBody();
+	}
+
+	if (rule_it->getHead()->size()==1)
+		head = headL->front();
+	else {
+		for (head_it=headL->begin(); head_it!=headL->end(); head_it++) {
+			head = head + *head_it + " x ";
+		}
+		head.replace(head.size()-3,3," ");
+	}
+
+	if (posL->size()>0 && negL->size()==0) {
+		head = rule_it->getPossibilisticValue() +" "+ head + " :- ";
+		for (body_it=posL->begin(); body_it!=posL->end(); body_it++) {
+			body = body + *body_it + ", ";
+		}
+		//replacing the ", " last with "."
+		if (GENERATE_DEBUG) {
+			cout << "------------------------" << endl;
+			cout << "body is" << body << endl;
+			cout << "------------------------" << endl;
+		}
+		body.replace(body.size()-2,2,".");
+		if (GENERATE_DEBUG) {
+			cout << "------------------------" << endl;
+			cout << "new body is" << body << endl;
+			cout << "------------------------" << endl;
+		}
+	}
+	if (posL->size()==0 && negL->size()>0) {
+		head = rule_it->getPossibilisticValue() +" "+ head + " :- ";
+		body = "not ";
+		for (body_it=negL->begin(); body_it!=negL->end(); body_it++) {
+			body = body + *body_it + ", not ";
+		}
+		//replacing the ", " last with "."
+		if (GENERATE_DEBUG) {
+			cout << "------------------------" << endl;
+			cout << "body is" << body << endl;
+			cout << "------------------------" << endl;
+		}
+		body.replace(body.size()-6,6,".");
+		if (GENERATE_DEBUG) {
+			cout << "------------------------" << endl;
+			cout << "new body is" << body << endl;
+			cout << "------------------------" << endl;
+		}
+	}
+	if (posL->size()>0 && negL->size()>0) {
+		head = rule_it->getPossibilisticValue() +" "+ head + " :- ";
+		for (body_it=posL->begin(); body_it!=posL->end(); body_it++) {
+			body = body + *body_it + ", ";
+		}
+		body = body + "not ";
+		for (body_it=negL->begin(); body_it!=negL->end(); body_it++) {
+			body = body + *body_it + ", not ";
+		}
+		body.replace(body.size()-6,6,".");
+	}
+	if (posL->size()==0 && negL->size()==0)
+		head = rule_it->getPossibilisticValue() +" "+ head + ".";
+	rule = head + body;
+	rule_it->setTransformedRule(rule);
+	if (GENERATE_DEBUG) {
+		cout << "------------------------" << endl;
+		cout << "rule is " << rule << endl;
+		cout << "------------------------" << endl;
+	}
+	//}
+	//else if (rule_it->getHead()->size() > 1) {
+	//	cout << "******************************************************" << endl;
+	//	cout << "***FATAL ERRROR: head contains more than 1 atom*******" << endl;
+	//	cout << "******************************************************" << endl;
+	//}
+	return rule;
+}
+
+void
+generateLppod(LppodProgram *lppod,string program_name) {
+
+	//list<LppodProgram>::iterator lppod;
+	list<LppodRule>::iterator rule_it;
+	ofstream myfile;
+	char *transformedLppod;
+	//int i = 1;
+	//string nr;
+
+	if (GENERATE_DEBUG) {
+		cout << "**********************************" << endl;
+		cout << "*****generateLppod********" << endl;
+		cout << "**********************************" << endl;
+	}
+
+	//if (lppods->size()>0) {
+
+	//for (lppod=lppods->begin(); lppod!=lppods->end(); lppod++) {
+
+	stringstream out;
+	//ofstream myfile;
+	//out << i;
+	//nr = out.str();
+	transformedLppod = Utils::string2char("tmp/"+program_name+".lppod");
+
+	myfile.open (transformedLppod);
+	//myfile << "Writing this to a file.\n";
+	for (rule_it=lppod->getRuleList()->begin(); rule_it!=lppod->getRuleList()->end(); rule_it++) {
+		int rule_type = rule_it->getRuleType();
+		if (GENERATE_DEBUG) {
+			cout << "----------------------------------" << endl;
+			cout << "-------Rule type to unparse-------" << rule_type << endl;
+			cout << "-------Rule to unparse------------" << rule_it->getRule() << endl;
+			cout << "-------Rule be deleted------------" << rule_it->getIsDeleted() << endl;
+			cout << "----------------------------------" << endl;
+		}
+		switch(rule_type){
+
+		case UNDEFINED:
+		case EMPTY:
+		case COMMENT:
+		case CONSTRAINT:
+			myfile << rule_it->getRule() << "\n";
+			break;
+		case FACT:
+		case NORMAL:
+		case DISJUNCTION:
+			if (!rule_it->getIsDeleted()) {
+				myfile << unParseLppodRule(&*rule_it) << "\n";
+			}
+			break;
+
+
+		default:
+			cout << "**********************************" << endl;
+			cout << "*******Unknown Rule founded*******" << endl;
+			cout << "**********************************" << endl;
+		}
+	}
+	myfile.flush();
+	myfile.close();
+	//i++;
+	//}
+	//}
+	//else {
+	//	cout << "*************************" << endl;
+	//	cout << "*******FATAL ERROR*******" << endl;
+	//	cout << "*************************" << endl;
+	//	exit(EXIT_FAILURE);
+	//}
+	//return lppods->size();
 
 }
 

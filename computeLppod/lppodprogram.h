@@ -11,9 +11,11 @@
 #include <iostream>
 #include <list>
 #include "lppodrule.h"
+#include "fact.h"
 
 
 class LppodRule;
+class Fact;
 
 class LppodProgram {
 
@@ -21,6 +23,8 @@ class LppodProgram {
 private:
 
 	list<LppodRule> *ruleList;
+	list<string> *programHead;
+	list<Fact> *programFacts;
 	int ruleNumber;
 	bool hasOrderedDisjunctionRules;
 
@@ -34,7 +38,28 @@ public:
 	void printRuleList();
 
 
-	bool isOrderedDisjunctionProgram() const
+
+    list<Fact> *getProgramFacts() const
+    {
+        return programFacts;
+    }
+
+    void setProgramFacts(list<Fact> *programFacts)
+    {
+        this->programFacts = programFacts;
+    }
+
+    list<string> *getProgramHead() const
+    {
+        return programHead;
+    }
+
+    void setProgramHead(list<string> *programHead)
+    {
+        this->programHead = programHead;
+    }
+
+    bool isOrderedDisjunctionProgram() const
 	{
 
 		return hasOrderedDisjunctionRules;

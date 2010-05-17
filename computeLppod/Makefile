@@ -16,7 +16,7 @@ PREPROCPARSELIB = libpreprocLparselib.dylib
 LIBS = -L../lparselib/dist -llparselib -L../psmodelslib/dist -lpsmodelslib -L../possmodelslib/dist -lpossmodelslib -L../possmodelslib/dist -lpreprocLparselib
 #LIBS = -L../lparselib/dist -llparselib -L../lparse2lib/dist -llparse2lib -L../psmodelslib/dist -lpsmodelslib -L../possmodelslib/dist -lpossmodelslib -L../possmodelslib/dist -lpreprocLparselib
 #LIBS = -L../psmodelslib/dist -lpsmodelslib -L../possmodelslib/dist -lpreprocLparselib 
-SRCS = utils.cc lpodmodel.cc parsing.cc lppodprogram.cc lppodrule.cc lppodreduction.cc main.cc 
+SRCS = utils.cc lpodmodel.cc lppodmodel.cc parsing.cc lppodprogram.cc lppodrule.cc possibilisticatom.cc fact.cc lppodreduction.cc lppodtransformations.cc possibilisticdegree.cc possprefrelation.cc main.cc 
 OBJS = $(SRCS:.cc=.o)
 
 
@@ -49,14 +49,14 @@ copy:
 	cp ../possmodelslib/dist/$(PREPROCPARSELIB) .
 
 make-lparse:
-	cd ../lparselib; make lparse;
-	cd ../computeLPPOD; 
+	#cd ../lparselib; make lparse;
+	#cd ../computeLPPOD; 
 	
 make-libs:
-	cd ../lparselib; make all;
-	cd ../psmodelslib; make all; 
-	cd ../possmodelslib; make all; 
-	cd ../computeLPPOD;
+	#cd ../lparselib; make all;
+	#cd ../psmodelslib; make all; 
+	#cd ../possmodelslib; make all; 
+	#cd ../computeLPPOD;
 
 clean:
 	rm preprocLPPODparse.o preprocLPPODparse.cc preprocLPPODparse.lex.c

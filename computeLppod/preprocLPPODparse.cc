@@ -1654,12 +1654,13 @@ FILE* f;
 if (lppod!=NULL) {
 	int nsize = filename.size();
 	//cout << "\nLength filename is: "<<nsize;
-	filename2 = filename.substr(6,nsize-12);
+	filename2 = filename.substr(4,nsize-10);
+	//filename2 = filename.substr(6,nsize-10);
 	
-	//cout << "\nProgram name is: " <<filename2;
+	//cout << "Program name is: " <<filename2;
 	f = fopen (lppod,"r");
 	if (!f){
-	  cout << "impossible to open " << lppod << endl;
+	  cout << "impossible to open :" << lppod << endl;
 	  //fprintf(stderr, "impossible to open %s \n", lppod);
 	  //exit(1);
 	  return NULL;
@@ -1667,7 +1668,7 @@ if (lppod!=NULL) {
 	}
 	yyin = f;
 	
-//cout <<"\nProgram to apply projection * "<<filename;
+//cout <<"Program to apply projection * "<<filename;
 
 }	
 FILE* stream;

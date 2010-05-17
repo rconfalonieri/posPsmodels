@@ -8,6 +8,13 @@
 #ifndef LPPODTRANSFORMATIONS_H_
 #define LPPODTRANSFORMATIONS_H_
 
+
+#include "lppodprogram.h"
+#include "fact.h"
+#include "utils.h"
+#include "parsing.h"
+#include <map>
+
 void transformLppod(LppodProgram *p);
 
 

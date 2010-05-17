@@ -33,6 +33,8 @@ public:
 	 static string removeSubString(string str, string key);
 	 static void printVectorString(vector<string> v);
 	 static int string2Int(string strConvert);
+	 static string int2String(int intConvert);
+	// static void tokenize(const string& str, vector<string>& tokens, const string& delimiters = " ");
 
 };
 

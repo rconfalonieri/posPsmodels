@@ -8,6 +8,12 @@
 #include "lpodmodel.h"
 
 
+LpodModel::LpodModel() {
+
+
+}
+
+
 LpodModel::LpodModel(int id) {
 
 	this->model_id = id;

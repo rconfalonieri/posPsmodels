@@ -48,24 +48,29 @@ using namespace std;
 #include "lppodprogram.h"
 #include "lpodmodel.h"
 #include "lppodreduction.h"
+#include "lppodtransformations.h"
+#include "possprefrelation.h"
 
 
 
 //TODO still-list:
 /*
  * 1) parsing from lparse (delayed)
- * 2) transformation rules (the success specially)
+ * 2) check transformation rules, some errors.
+ * 2a) check reduction rules, some error
  * 3) possibilistic preference relation
  * 3a) choose criteria of preference relation (for psmodel)
  * 4) bus error on loading liblparse2lib at runtime.....
- * 5) Java Wrapper, how?
-
+ * 5) Java Wrapper
  * 6) optimize and re-organize the code (modularity, free unused memory etc)
+ * 7) configure for linux platform
  *
  * DONE:
  * 1) if the input program is not LPOD does not work right now
+ * 2) transformation rules (partially done, missing the all the combinations that lead to the normal form)
  * 5) +/- fix the other packages to be able to use them as libraries (lparse, psmodels)
  * 4) find where stable models of psmodels are stored
+ *
  */
 
 
@@ -94,6 +99,7 @@ main(int argc, char* argv[]) {
 	char *psmodel_par[3];
 	char *possmodel_par[3];
 	char *program_name;
+	char *transformedProgramName;
 	list <LpodModel> *modelList = new list<LpodModel>();
 
 
@@ -108,25 +114,36 @@ main(int argc, char* argv[]) {
 	//fname = "lppod/diagnosis.lppod";
 	if (!fname) {
 		cerr << "usage: posPsmodels input_file" << endl;
-		return (EXIT_FAILURE);
+		exit(1);
 	}
 
-	//generate P*
-	program_name = possibilistic_projection(fname);
+	string filename = Utils::char2string(fname);
 
+	transformedProgramName = Utils::string2char(filename.substr(6,(filename.size())-12));
+	//cout << "transformedProgramName " << Utils::char2string(transformedProgramName) << endl;
+
+
+	LppodProgram *p = new LppodProgram;
+	LppodProgram *transformed = new LppodProgram;
+	//cout << Utils::string2char("lppod/"+Utils::char2string(transformedProgramName)+".lppod") << endl;
+	parseLppod(fname,p);
+	parseLppod(fname,transformed);
+	transformLppod(transformed);
+	generateLppod(transformed,transformedProgramName);
+
+	//generate P*
+
+	program_name = possibilistic_projection(Utils::string2char("tmp/"+Utils::char2string(transformedProgramName)+".lppod"));
+	//cout << "program_name" << Utils::char2string(program_name) << endl;
 	//program_name = "diagnosis";
 	//char * program_name2 = "diagnosis";
 	if (program_name == NULL) {
 		cout << "\nPossibilistic projection failed....\n";
-		return (EXIT_FAILURE);
+		exit(1);
 	}
 
-	LppodProgram *p = new LppodProgram;
-	parseLppod(fname,p);
 
-	//transformLppod(p);
-
-	list<string> *possibilisticModels = new list<string>();
+	list<LppodModel> *possModelList = new list<LppodModel>();
 	string lparse_command;
 	int reduced_programs_nr = 1;
 
@@ -134,7 +151,7 @@ main(int argc, char* argv[]) {
 
 
 		//When it was a library...
-		cout << "Program contains x" << endl;
+		//cout << "Program contains x" << endl;
 		lparse_par[0] = "3";
 		lparse_par[1] = "--true-negation";
 		lparse_par[2] = "--priorities";
@@ -164,14 +181,17 @@ main(int argc, char* argv[]) {
 		//printListElement(modelList);
 
 		//reduce P* according to the M_i found by psmodels
-		list<LppodProgram> *reduced_lppods = reduceLppod(modelList,p);
+		list<LppodProgram> *reduced_lppods = reduceLppod(modelList,transformed);
 		reduced_programs_nr = generateReducedLppods(reduced_lppods,Utils::char2string(program_name));
 
 	}
 	string reducedLPPOD;
 
 
-	for(int i=1; i<=reduced_programs_nr; i++) {
+	list<LpodModel>::iterator modelIt;
+	int i = 1;
+	for (modelIt=modelList->begin();modelIt!=modelList->end();modelIt++) {
+		//for(int i=1; i<=reduced_programs_nr; i++) {
 
 		string preProcInput1;
 		stringstream out;
@@ -182,11 +202,10 @@ main(int argc, char* argv[]) {
 			preProcInput1 = "reducedlppod/"+reducedLPPOD;
 		}
 		else {
+
 			reducedLPPOD = Utils::char2string(program_name)+".lppod";
 			preProcInput1 = "lppod/"+reducedLPPOD;
 		}
-
-
 
 		string preProcInput2 = "tmp/"+reducedLPPOD+".prelparse";
 		//cout << "preprocLparse inputs: " << preProcInput1 << "" << preProcInput2 << endl;
@@ -237,12 +256,15 @@ main(int argc, char* argv[]) {
 
 		string output_file = "lpodmodels/"+reducedLPPOD+".possmodels";
 		possmodels(2,possmodel_par,Utils::string2char(output_file));
-		generatePossibilisticModel(possibilisticModels,output_file);
+		generatePossibilisticModels(possModelList,output_file,&(*modelIt));
+		i++;
 
-
+		//}
 	}
-
-	printPossibilisticModels(modelList,possibilisticModels);
+	list<LppodModel> *sortedLppodModelL = new list<LppodModel>();
+	possibilisticPreferenceRelation(possModelList,transformed,sortedLppodModelL);
+	//possibilisticPreferenceRelation(possModelList,p,sortedLppodModelL);
+	printPossibilisticModels(sortedLppodModelL);
 
 	return (EXIT_SUCCESS);
 }
