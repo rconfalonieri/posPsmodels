@@ -150,7 +150,7 @@ printPossibilisticModels(list<LppodModel> *possModelList) {
 			}
 			//cout <<  endl;
 			//LpodModel *m = getLpodModelById(modelList,i);
-			cout << "Was Best LpodModel " << possModelsIt->getBestModel() << endl;
+			//cout << "Was Best LpodModel " << possModelsIt->getBestModel() << endl;
 			//cout << "Atoms: " << endl;
 			//cout << "Atoms size: " << possModelsIt->getAtoms()->size() << endl;
 			//for (atomIt=possModelsIt->getAtoms()->begin(); atomIt!=possModelsIt->getAtoms()->end(); atomIt++) {

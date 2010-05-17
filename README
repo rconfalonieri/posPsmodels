@@ -24,38 +24,46 @@ we can compute all possibilistic preferred stable models with:
 
 The resulting answer is:
 
- ******** Possibilistic Model 1***********
-Possibilistic Atoms: 
-(coffee, 40) (cake, 60) 
-Satisfaction degrees: 
-*sat(1,2) *sat(2,1) 
+******** Possibilistic Model 1***********
+(coffee,40) (cake,60) 
+[Rule_id,sat_degree]: [1,2] [2,1] 
+[Rule_id,Necessity_degree]: [1,60] [2,40] 
+[Rule_id,Rule]: 1, 60 ice_cream x cake .
+[Rule_id,Rule]: 2, 40 coffee x tea .
+Was Best LpodModel 1
 ***************************************************
 
-******** Possibilistic Model 2***********
-Possibilistic Atoms: 
-(tea, 40) (cake, 60) 
-Satisfaction degrees: 
-*sat(1,2) *sat(2,2) 
-***************************************************
 
 ******** Possibilistic Model 3***********
-Possibilistic Atoms: 
-(tea, 40) (ice_cream, 60) 
-Satisfaction degrees: 
-*sat(1,1) *sat(2,2) 
+(tea,40) (ice_cream,60) 
+[Rule_id,sat_degree]: [1,1] [2,2] 
+[Rule_id,Necessity_degree]: [1,60] [2,40] 
+[Rule_id,Rule]: 1, 60 ice_cream x cake .
+[Rule_id,Rule]: 2, 40 coffee x tea .
+Was Best LpodModel 1
 ***************************************************
 
+
+******** Possibilistic Model 2***********
+(tea,40) (cake,60) 
+[Rule_id,sat_degree]: [1,2] [2,2] 
+[Rule_id,Necessity_degree]: [1,60] [2,40] 
+[Rule_id,Rule]: 1, 60 ice_cream x cake .
+[Rule_id,Rule]: 2, 40 coffee x tea .
+Was Best LpodModel 1
+***************************************************
+
+
 As we see, there are three possibilistic preferred models. 
-Possibilistic Model 1 and Possibilistic Model 3 are equally preferred.
-Possibilistic Model 2 is second choice.
+
+Possibilistic Model 1 and Possibilistic Model 3 are equally preferred by the satisfaction degrees but Possibilistic Model 3 is possibilistically preferred to Possibilistic Model 1. Possibilistic Model 2 is a third choice. 
 
 Syntax
 ------
 
 Basically everything that goes through lparse should work also with
 posPsmodels but since this is a first prototype, it might be a good idea
-to refrain from using more esoteric stuff. In particular the use of predicates 
-is still not supported, and it is one of the main improvement planned to be made.
+to refrain from using more esoteric stuff. 
 
 The basic syntax is as follows:
 
